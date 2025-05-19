@@ -9,11 +9,19 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Check if the device is in portrait mode (single page view)
     function isPortraitMode() {
-        return window.innerWidth <= 768 && window.innerWidth < window.innerHeight;
+        const isPortrait = window.matchMedia("(orientation: portrait)").matches;
+        const isMobileWidth = window.innerWidth <= 768;
+        console.log("Window width:", window.innerWidth, "Height:", window.innerHeight);
+        console.log("Is portrait by media query:", isPortrait);
+        console.log("Is mobile width:", isMobileWidth);
+        
+        // Use media query for more reliable orientation detection
+        return isMobileWidth && isPortrait;
     }
     
     // Function to handle responsive layout changes
     function handleResponsiveLayout() {
+        console.log("Layout change detected - reloading page");
         // If the page layout has changed, reload the current page
         loadPage();
     }
@@ -21,7 +29,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add window resize listener to handle orientation changes
     window.addEventListener('resize', function() {
         if (!isAnimating) {
+            console.log("Window resized - checking layout");
             handleResponsiveLayout();
+        }
+    });
+    
+    // Listen specifically for orientation changes
+    window.addEventListener('orientationchange', function() {
+        console.log("Orientation changed");
+        if (!isAnimating) {
+            // Small delay to ensure browser has updated dimensions
+            setTimeout(handleResponsiveLayout, 100);
         }
     });
 
@@ -71,7 +89,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to load pages
     function loadPage() {
         function createPageContent() {
-            const isMobileDevice = isPortraitMode();
+            const isPortrait = isPortraitMode();
+            console.log("Creating page content. Portrait mode:", isPortrait);
             
             if (currentPage === 1) {
                 flipbook.innerHTML = '';
@@ -139,8 +158,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 pagesContainer.id = 'pages-container';
                 pagesContainer.className = 'pages-container fade-out';
                 
-                // For mobile: show only one page at a time
-                if (isMobileDevice) {
+                // For portrait mode on mobile: show only one page at a time
+                if (isPortrait) {
+                    console.log("Single page layout (portrait mode)");
                     const singlePage = document.createElement('div');
                     singlePage.className = 'page-side';
                     const singleImg = document.createElement('img');
@@ -150,8 +170,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     singlePage.appendChild(singleImg);
                     pagesContainer.appendChild(singlePage);
                 } 
-                // For desktop: show two pages side by side
+                // For landscape or desktop: show two pages side by side
                 else {
+                    console.log("Two-page layout (landscape or desktop mode)");
                     const leftPage = document.createElement('div');
                     leftPage.id = 'left-page';
                     leftPage.className = 'page-side left-page';
@@ -204,14 +225,17 @@ document.addEventListener('DOMContentLoaded', function() {
         if (isAnimating) return; // Prevent button spam
         console.log("prevBtn clicked");
         if (currentPage > 1) {
-            // On mobile, always navigate one page at a time
+            // On mobile in portrait mode, always navigate one page at a time
             if (isPortraitMode()) {
+                console.log("Previous in portrait mode - moving back 1 page");
                 currentPage--;
             } 
-            // When in two-page view on desktop, go back by 2 pages (except near the end)
+            // In landscape mode or desktop, go back by 2 pages (except at the beginning)
             else if (currentPage > 2 && currentPage <= totalPages) {
+                console.log("Previous in landscape/desktop - moving back 2 pages");
                 currentPage -= 2;
             } else {
+                console.log("Previous at beginning of book - moving back 1 page");
                 currentPage--;
             }
             loadPage();
@@ -222,14 +246,17 @@ document.addEventListener('DOMContentLoaded', function() {
         if (isAnimating) return; // Prevent button spam
         console.log("nextBtn clicked");
         if (currentPage < totalPages) {
-            // On mobile, always navigate one page at a time
+            // On mobile in portrait mode, always navigate one page at a time
             if (isPortraitMode()) {
+                console.log("Next in portrait mode - moving forward 1 page");
                 currentPage++;
             }
-            // When in two-page view on desktop, advance by 2 pages (except at the beginning)
+            // In landscape mode or desktop, advance by 2 pages (except at the end)
             else if (currentPage > 1 && currentPage < totalPages - 1) {
+                console.log("Next in landscape/desktop - moving forward 2 pages");
                 currentPage += 2;
             } else {
+                console.log("Next at end of book - moving forward 1 page");
                 currentPage++;
             }
             loadPage();
