@@ -181,8 +181,8 @@ body {
     }
 }
 
-/* Mobile responsiveness */
-@media screen and (max-width: 768px) {
+/* Mobile responsiveness - portrait mode */
+@media screen and (max-width: 768px) and (orientation: portrait) {
     .container {
         padding: 10px;
     }
@@ -279,7 +279,7 @@ body {
 }
 
 /* For very small screens like phones in portrait mode */
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 480px) and (orientation: portrait) {
     .container {
         padding: 5px;
     }
