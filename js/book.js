@@ -7,9 +7,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const totalPages = 28; // Based on the count of page files
     let isAnimating = false; // Flag to prevent multiple animations
     
-    // Check if the device is mobile
-    function isMobile() {
-        return window.innerWidth <= 768;
+    // Check if the device is in portrait mode (single page view)
+    function isPortraitMode() {
+        return window.innerWidth <= 768 && window.innerWidth < window.innerHeight;
     }
     
     // Function to handle responsive layout changes
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to load pages
     function loadPage() {
         function createPageContent() {
-            const isMobileDevice = isMobile();
+            const isMobileDevice = isPortraitMode();
             
             if (currentPage === 1) {
                 flipbook.innerHTML = '';
@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log("prevBtn clicked");
         if (currentPage > 1) {
             // On mobile, always navigate one page at a time
-            if (isMobile()) {
+            if (isPortraitMode()) {
                 currentPage--;
             } 
             // When in two-page view on desktop, go back by 2 pages (except near the end)
@@ -223,7 +223,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log("nextBtn clicked");
         if (currentPage < totalPages) {
             // On mobile, always navigate one page at a time
-            if (isMobile()) {
+            if (isPortraitMode()) {
                 currentPage++;
             }
             // When in two-page view on desktop, advance by 2 pages (except at the beginning)
