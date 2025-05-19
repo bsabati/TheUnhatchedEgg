@@ -232,6 +232,52 @@ body {
     }
 }
 
+/* Landscape orientation on mobile devices */
+@media screen and (max-width: 768px) and (orientation: landscape) {
+    .container {
+        padding: 5px;
+    }
+    
+    .flipbook {
+        width: 95vw;
+        height: 80vh;
+    }
+    
+    .pages-container {
+        height: 80vh;
+        flex-direction: row; /* Restore side-by-side view in landscape */
+    }
+    
+    .page-side {
+        max-width: 50%;
+        height: 100%;
+    }
+    
+    .left-page {
+        justify-content: flex-end;
+        padding-right: 10px;
+        padding-bottom: 0;
+        box-shadow: inset -8px 0 10px -6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .right-page {
+        justify-content: flex-start;
+        padding-left: 10px;
+        padding-top: 0;
+        box-shadow: inset 8px 0 10px -6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .book-controls {
+        margin-bottom: 10px;
+    }
+    
+    .nav-btn {
+        font-size: 1.2rem;
+        width: 30px;
+        height: 30px;
+    }
+}
+
 /* For very small screens like phones in portrait mode */
 @media screen and (max-width: 480px) {
     .container {
