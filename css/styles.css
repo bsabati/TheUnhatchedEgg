@@ -181,6 +181,21 @@ body {
     }
 }
 
+/* Add specific cover page styles */
+.cover-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden !important;
+}
+
+.cover-page img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    margin: 0 auto;
+}
+
 /* Mobile responsiveness - portrait mode */
 @media screen and (max-width: 768px) and (orientation: portrait) {
     .container {
@@ -195,11 +210,23 @@ body {
     .pages-container {
         height: 85vh;
         flex-direction: column;
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden; /* Prevent any overflow */
     }
     
     .page-side {
         max-width: 100%;
         height: 50%;
+        overflow: hidden; /* Prevent any overflow */
+    }
+    
+    /* Fix for cover pages */
+    .pages-container img {
+        max-width: 95%;
+        max-height: 95%;
+        object-fit: contain;
+        margin: 0 auto;
     }
     
     .left-page {
@@ -230,6 +257,19 @@ body {
         height: auto;
         object-fit: contain;
     }
+    
+    /* Extra styles for cover pages on mobile */
+    .cover-page {
+        width: 100%;
+        max-width: 100%;
+        padding: 5px;
+        box-sizing: border-box;
+    }
+    
+    .cover-page img {
+        max-width: 90%;
+        max-height: 90%;
+    }
 }
 
 /* Landscape orientation on mobile devices */
@@ -246,11 +286,23 @@ body {
     .pages-container {
         height: 80vh;
         flex-direction: row; /* Restore side-by-side view in landscape */
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden; /* Prevent any overflow */
     }
     
     .page-side {
         max-width: 50%;
         height: 100%;
+        overflow: hidden; /* Prevent any overflow */
+    }
+    
+    /* Fix for cover pages */
+    .pages-container img {
+        max-width: 95%;
+        max-height: 95%;
+        object-fit: contain;
+        margin: 0 auto;
     }
     
     .left-page {
@@ -276,6 +328,19 @@ body {
         width: 30px;
         height: 30px;
     }
+    
+    /* Extra styles for cover pages in landscape */
+    .cover-page {
+        width: 100%;
+        max-width: 100%;
+        padding: 5px;
+        box-sizing: border-box;
+    }
+    
+    .cover-page img {
+        max-width: 90%;
+        max-height: 90%;
+    }
 }
 
 /* For very small screens like phones in portrait mode */
@@ -291,11 +356,30 @@ body {
     
     .pages-container {
         height: 80vh;
+        overflow: hidden;
+    }
+    
+    /* Further constrain images on very small screens */
+    .pages-container img {
+        max-width: 90%;
+        max-height: 90%;
+        object-fit: contain;
     }
     
     .nav-btn {
         font-size: 1.2rem;
         width: 30px;
         height: 30px;
+    }
+    
+    /* Extra styles for cover pages on very small screens */
+    .cover-page {
+        width: 100%;
+        padding: 3px;
+    }
+    
+    .cover-page img {
+        max-width: 85%;
+        max-height: 85%;
     }
 }
