@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 cardWrapper.className = 'card';
                 
                 const frontCover = document.createElement('div');
-                frontCover.className = 'pages-container fade-out';
+                frontCover.className = 'pages-container fade-out cover-page';
                 const frontImg = document.createElement('img');
                 const pageNumber = currentPage.toString().padStart(3, '0');
                 frontImg.src = `pages/page_${pageNumber}.jpg`;
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 cardWrapper.className = 'card';
                 
                 const backCover = document.createElement('div');
-                backCover.className = 'pages-container fade-out';
+                backCover.className = 'pages-container fade-out cover-page';
                 const backImg = document.createElement('img');
                 const pageNumber = currentPage.toString().padStart(3, '0');
                 backImg.src = `pages/page_${pageNumber}.jpg`;
