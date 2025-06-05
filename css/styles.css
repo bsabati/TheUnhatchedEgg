@@ -165,6 +165,8 @@ body {
     position: relative;
     isolation: isolate;
     transition: all 0.5s ease;
+    /* Add shadow to create the effect of resting on a surface */
+    /* box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3), 0 6px 8px rgba(0, 0, 0, 0.2); */
 }
 
 .pages-container.fade-out {
@@ -186,7 +188,7 @@ body {
     align-items: center;
     justify-content: center;
     position: relative;
-    background-color: #fffef7;
+    /* background-color: #fffef7; */
     /* Subtle paper texture effect */
     background-image: 
         linear-gradient(to right, rgba(0,0,0,0.01) 1px, transparent 1px),
@@ -230,6 +232,8 @@ body {
     transform-style: preserve-3d;
     transition: transform 0.5s ease;
     perspective: 1000px;
+    /* Add perspective transform to enhance 3D appearance */
+    transform: perspective(1200px) rotateX(5deg);
 }
 
 .flipbook .card:hover {
