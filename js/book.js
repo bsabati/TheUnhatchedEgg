@@ -281,6 +281,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         rightPage.appendChild(rightImg);
                         pagesContainer.appendChild(rightPage);
                         
+                        if (currentPage % 2 !== 0) {
+                            currentPage--;
+                        }
                         const leftPageNumber = currentPage.toString().padStart(3, '0');
                         leftImg.src = `pages/page_${leftPageNumber}.jpg`;
                         leftImg.alt = `Page ${currentPage}`;
