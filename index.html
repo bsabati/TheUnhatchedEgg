@@ -14,22 +14,48 @@
 <!-- Login Container -->
 <div id="login-container" class="login-container">
     <div class="login-form">
-        <h2>כניסה לספר</h2>
+        <h2>Login</h2>
         <div class="form-group">
-            <label for="username">שם משתמש</label>
+            <label for="username">Username</label>
             <input type="text" id="username" placeholder="הכנס שם משתמש">
         </div>
         <div class="form-group">
-            <label for="password">סיסמה</label>
+            <label for="password">Password</label>
             <input type="password" id="password" placeholder="הכנס סיסמה">
         </div>
-        <button id="login-btn" class="login-btn">כניסה</button>
+        <button id="login-btn" class="login-btn">Login</button>
         <p id="login-error" class="login-error"></p>
+    </div>
+</div>
+
+<!-- Language Selection Container -->
+<div id="language-container" class="language-container" style="display: none;">
+    <div class="language-form">
+        <h2>בחר שפה</h2>
+        <p>Choose Language</p>
+        <div class="language-options">
+            <button class="language-btn" data-language="hebrew">
+                <span class="language-name">עברית</span>
+                <span class="language-name-en">Hebrew</span>
+            </button>
+            <button class="language-btn" data-language="english">
+                <span class="language-name">English</span>
+                <span class="language-name-en">English</span>
+            </button>
+        </div>
     </div>
 </div>
 
 <!-- Book Container (hidden initially) -->
 <div id="book-container" class="container" style="display: none;">
+    <div class="book-header">
+        <div id="language-indicator" class="language-indicator">
+            <span id="current-language">עברית</span>
+            <button id="change-language-btn" class="change-language-btn">
+                <i class="fas fa-language"></i> שנה שפה
+            </button>
+        </div>
+    </div>
     <div class="book-controls">
         <button id="prev-btn" class="nav-btn"><i class="fas fa-chevron-right"></i></button>
         <div id="flipbook" class="flipbook">
