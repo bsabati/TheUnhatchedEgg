@@ -5,16 +5,24 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Login Elements
     const loginContainer = document.getElementById('login-container');
+    const languageContainer = document.getElementById('language-container');
     const bookContainer = document.getElementById('book-container');
     const loginBtn = document.getElementById('login-btn');
     const usernameInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
     const loginError = document.getElementById('login-error');
     
-    // Check if user is already logged in
+    // Language selection elements
+    const languageBtns = document.querySelectorAll('.language-btn');
+    
+    // Check if user is already logged in and has selected a language
     const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
-    if (isLoggedIn) {
+    const selectedLanguage = sessionStorage.getItem('selectedLanguage');
+    
+    if (isLoggedIn && selectedLanguage) {
         showBook();
+    } else if (isLoggedIn) {
+        showLanguageSelection();
     }
     
     // Function to hash a string using SHA-256
@@ -42,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (username === correctUsername && passwordHash === correctPasswordHash) {
             // Login successful
             sessionStorage.setItem('isLoggedIn', 'true');
-            showBook();
+            showLanguageSelection();
         } else {
             // Login failed
             loginError.textContent = 'שם משתמש או סיסמה שגויים';
@@ -68,10 +76,54 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
+    // Function to show language selection
+    function showLanguageSelection() {
+        loginContainer.style.display = 'none';
+        languageContainer.style.display = 'flex';
+        bookContainer.style.display = 'none';
+        
+        // Remove existing event listeners to prevent duplicates
+        languageBtns.forEach(btn => {
+            btn.removeEventListener('click', handleLanguageSelection);
+        });
+        
+        // Add event listeners for language buttons
+        languageBtns.forEach(btn => {
+            btn.addEventListener('click', handleLanguageSelection);
+        });
+    }
+    
+    // Function to handle language selection
+    function handleLanguageSelection() {
+        const language = this.getAttribute('data-language');
+        sessionStorage.setItem('selectedLanguage', language);
+        showBook();
+    }
+    
     // Function to handle login and show book
     function showBook() {
         loginContainer.style.display = 'none';
+        languageContainer.style.display = 'none';
         bookContainer.style.display = 'flex';
+        
+        // Update language indicator
+        const selectedLanguage = sessionStorage.getItem('selectedLanguage') || 'hebrew';
+        const currentLanguageSpan = document.getElementById('current-language');
+        const changeLanguageBtn = document.getElementById('change-language-btn');
+        
+        if (selectedLanguage === 'hebrew') {
+            currentLanguageSpan.textContent = 'עברית';
+            changeLanguageBtn.innerHTML = '<i class="fas fa-language"></i> שנה שפה';
+        } else if (selectedLanguage === 'english') {
+            currentLanguageSpan.textContent = 'English';
+            changeLanguageBtn.innerHTML = '<i class="fas fa-language"></i> Change Language';
+        }
+        
+        // Setup change language functionality
+        changeLanguageBtn.addEventListener('click', function() {
+            showLanguageSelection();
+        });
+        
         // Initialize book after login
         initializeBook();
         
@@ -80,8 +132,10 @@ document.addEventListener('DOMContentLoaded', function() {
         logoutBtn.addEventListener('click', function() {
             // Clear the session storage
             sessionStorage.removeItem('isLoggedIn');
+            sessionStorage.removeItem('selectedLanguage');
             // Show login form and hide book
             loginContainer.style.display = 'flex';
+            languageContainer.style.display = 'none';
             bookContainer.style.display = 'none';
             // Clear password field
             passwordInput.value = '';
@@ -98,6 +152,15 @@ document.addEventListener('DOMContentLoaded', function() {
         let currentPage = 1;
         const totalPages = 28; // Based on the count of page files
         let isAnimating = false; // Flag to prevent multiple animations
+        
+        // Get selected language
+        const selectedLanguage = sessionStorage.getItem('selectedLanguage') || 'hebrew';
+        
+        // Function to get the correct page path based on language
+        function getPagePath(pageNumber) {
+            const paddedPageNumber = pageNumber.toString().padStart(3, '0');
+            return `pages/${selectedLanguage}/page_${paddedPageNumber}.jpg`;
+        }
         
         // Check if the device is in portrait mode (single page view)
         function isPortraitMode() {
@@ -193,8 +256,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const frontCover = document.createElement('div');
                     frontCover.className = 'pages-container fade-out cover-page';
                     const frontImg = document.createElement('img');
-                    const pageNumber = currentPage.toString().padStart(3, '0');
-                    frontImg.src = `pages/page_${pageNumber}.jpg`;
+                    frontImg.src = getPagePath(currentPage);
                     frontImg.alt = 'Front Cover';
                     frontCover.appendChild(frontImg);
                     
@@ -220,8 +282,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const backCover = document.createElement('div');
                     backCover.className = 'pages-container fade-out cover-page';
                     const backImg = document.createElement('img');
-                    const pageNumber = currentPage.toString().padStart(3, '0');
-                    backImg.src = `pages/page_${pageNumber}.jpg`;
+                    backImg.src = getPagePath(currentPage);
                     backImg.alt = 'Back Cover';
                     backCover.appendChild(backImg);
                     
@@ -256,8 +317,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         const singlePage = document.createElement('div');
                         singlePage.className = 'page-side';
                         const singleImg = document.createElement('img');
-                        const pageNumber = currentPage.toString().padStart(3, '0');
-                        singleImg.src = `pages/page_${pageNumber}.jpg`;
+                        singleImg.src = getPagePath(currentPage);
                         singleImg.alt = `Page ${currentPage}`;
                         singlePage.appendChild(singleImg);
                         pagesContainer.appendChild(singlePage);
@@ -284,14 +344,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         if (currentPage % 2 !== 0) {
                             currentPage--;
                         }
-                        const leftPageNumber = currentPage.toString().padStart(3, '0');
-                        leftImg.src = `pages/page_${leftPageNumber}.jpg`;
+                        leftImg.src = getPagePath(currentPage);
                         leftImg.alt = `Page ${currentPage}`;
                         
                         // Right page (odd number)
                         if (currentPage + 1 <= totalPages) {
-                            const rightPageNumber = (currentPage + 1).toString().padStart(3, '0');
-                            rightImg.src = `pages/page_${rightPageNumber}.jpg`;
+                            rightImg.src = getPagePath(currentPage + 1);
                             rightImg.alt = `Page ${currentPage + 1}`;
                         }
                     }
